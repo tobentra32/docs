@@ -36,7 +36,395 @@ Design a docs site that looks great and empowers your users.
     Customize the design and colors of your site to match your brand.
   </Card>
     <Card
-    title="Set up navigation"
+    title="Set up navigation"---
+title: "Mr. Monei Node.js SDK"
+description: "Official Node.js SDK for Monei API - Seamless integration for wallets, crypto, bill payments, and exchanges"
+sidebar:
+  label: "Home"
+  order: 1
+---
+
+import { 
+  Tabs, 
+  Tab, 
+  CodeGroup, 
+  Card, 
+  CardGroup,
+  Steps,
+  Step,
+  Tip,
+  Note,
+  Warning,
+  ParamField,
+  ResponseExample,
+  RequestExample,
+  Accordion,
+  AccordionGroup
+} from 'nextra/components';
+
+<CardGroup cols={2}>
+  <Card 
+    title="🚀 Quick Start" 
+    icon="rocket" 
+    href="/quickstart"
+  >
+    Get running in 5 minutes with your first transaction
+  </Card>
+  <Card 
+    title="💳 Wallet Operations" 
+    icon="wallet" 
+    href="/features/wallet"
+  >
+    Manage balances, transfers, and bank accounts
+  </Card>
+  <Card 
+    title="🔗 Crypto" 
+    icon="crystal" 
+    href="/features/crypto"
+  >
+    EVM & Solana wallet management and swaps
+  </Card>
+  <Card 
+    title="🧠 AI Agent" 
+    icon="sparkles" 
+    href="/features/ai-agent"
+  >
+    Intelligent conversation and transaction assistance
+  </Card>
+</CardGroup>
+
+## What is Mr. Monei?
+
+The official **Node.js SDK** for Monei API - providing seamless integration with Nigeria's leading comprehensive financial services platform.
+
+<Note>
+  **Designed for Nigerian fintech**: Built specifically for the Nigerian market with support for local billers, banks, and regulatory compliance.
+</Note>
+
+## ✨ Features
+
+<CardGroup cols={3}>
+  <Card title="👤 User Management" icon="user">
+    Profile management and authentication
+  </Card>
+  <Card title="💼 Wallet Operations" icon="wallet">
+    Balance, funding, withdrawals, peer transfers, bank verification
+  </Card>
+  <Card title="⛓️ EVM Wallets" icon="globe">
+    Ethereum, BSC, Polygon, Arbitrum, and more
+  </Card>
+  <Card title="🌊 Solana" icon="flare">
+    SOL and SPL token management on Solana
+  </Card>
+  <Card title="📱 Bill Payments" icon="receipt">
+    Airtime, data, electricity, cable TV
+  </Card>
+  <Card title="🔄 Crypto Exchange" icon="arrows">
+    Token swaps on EVM and Solana
+  </Card>
+  <Card title="📊 Transactions" icon="chart">
+    Complete history and tracking
+  </Card>
+  <Card title="👥 Beneficiaries" icon="users">
+    Bank, crypto, and peer beneficiary management
+  </Card>
+  <Card title="📘 TypeScript" icon="code">
+    Full type definitions and IntelliSense
+  </Card>
+</CardGroup>
+
+---
+
+## 🚀 Installation
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install monei-sdk
+    ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash
+    yarn add monei-sdk
+    ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash
+    pnpm add monei-sdk
+    ```
+  </Tab>
+</Tabs>
+
+## ⚡ Quick Start
+
+Get your first transaction running in 60 seconds:
+
+<Steps>
+  <Step>
+    ### Get API Key
+    
+    Visit the [Mr. Monei Dashboard](https://monei.cc) to get your API key.
+    
+    <Warning>
+      Never expose your API key in client-side code or commit it to version control.
+    </Warning>
+  </Step>
+  
+  <Step>
+    ### Initialize SDK
+    
+    <CodeGroup>
+      ```typescript
+      import MoneiSDK from 'monei-sdk';
+      
+      const sdk = new MoneiSDK({
+        apiKey: process.env.MONEI_API_KEY!
+      });
+      ```
+    </CodeGroup>
+  </Step>
+  
+  <Step>
+    ### Make Your First Call
+    
+    <RequestExample>
+      ```typescript
+      async function main() {
+        try {
+          const user = await sdk.user.getCurrentUser();
+          console.log(`Welcome ${user.data.firstName}!`);
+          
+          const wallet = await sdk.walletAccount.getWallet();
+          console.log(`Naira Balance: ₦${wallet.nairaBalance.toLocaleString()}`);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+      
+      main();
+      ```
+    </RequestExample>
+    
+    <ResponseExample>
+      ```json
+      {
+        "data": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john@example.com"
+        }
+      }
+      ```
+    </ResponseExample>
+  </Step>
+</Steps>
+
+<Tip>
+  **Try it yourself**: Copy the code above, add your API key, and run it with `ts-node` or `node`.
+</Tip>
+
+---
+
+## 📚 Core Features
+
+### 💰 Wallet Operations
+
+<AccordionGroup>
+  <Accordion title="Generate Payment Link">
+    ```typescript
+    // Create a payment link for deposits
+    const paymentResult = await sdk.deposit.generatePaymentLink({
+      amount: 5000
+    });
+    
+    console.log(`Payment link: ${paymentResult.data.link}`);
+    ```
+    
+    <ParamField body="amount" type="number" required>
+      Amount in Nigerian Naira (₦)
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Peer Transfer">
+    ```typescript
+    // Send money to another user
+    await sdk.payout.peerTransfer({
+      receiver: "user@example.com",
+      amount: 1000,
+      transactionPin: "123456"
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="Bank Account Verification">
+    ```typescript
+    // Get list of supported banks
+    const banks = await sdk.walletUtility.getBanks();
+    
+    // Verify account details
+    const account = await sdk.walletUtility.verifyBankAccount({
+      accountNumber: "1234567890",
+      bank: "058" // GTBank code
+    });
+    
+    console.log(`Account Name: ${account.data.accountName}`);
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### ⛓️ EVM Blockchain Operations
+
+<Tabs>
+  <Tab title="Get Portfolio">
+    ```typescript
+    // Get EVM portfolio for any chain
+    const portfolio = await sdk.evm.getPortfolio(56); // BSC
+    console.log(`Portfolio value: $${portfolio.data.totalPortfolioValueUSD}`);
+    ```
+  </Tab>
+  
+  <Tab title="Token Balance">
+    ```typescript
+    // Get specific token balance
+    const balance = await sdk.evm.getTokenBalance(
+      '0x6B175474E89094C44Da98b954EedeAC495271d0F', // DAI
+      1 // Ethereum
+    );
+    ```
+  </Tab>
+  
+  <Tab title="Send Native Token">
+    ```typescript
+    // Send ETH, BNB, MATIC, etc.
+    const transferResult = await sdk.evm.sendNativeToken({
+      to: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      amount: "0.01",
+      chainId: 1 // Ethereum
+    });
+    
+    console.log(`Transaction hash: ${transferResult.data.txHash}`);
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+### 🌊 Solana Operations
+
+<Tabs>
+  <Tab title="Get Wallet">
+    ```typescript
+    // Get your Solana wallet address
+    const address = await sdk.solana.getWalletAddress();
+    console.log(`Wallet address: ${address.data.address}`);
+    ```
+  </Tab>
+  
+  <Tab title="Portfolio">
+    ```typescript
+    // Get SOL balance and SPL tokens
+    const portfolio = await sdk.solana.getPortfolio('mainnet-beta');
+    console.log(`SOL Balance: ${portfolio.data.nativeBalance}`);
+    ```
+  </Tab>
+  
+  <Tab title="Transfer SOL">
+    ```typescript
+    // Send SOL to any address
+    const transferResult = await sdk.solana.sendNativeToken({
+      to: "5AH3qo1v1EZfT3QKQpSsx1F8W5JyGEVZPcD5DzkX1N1d",
+      amount: "1.5",
+      network: "mainnet-beta"
+    });
+    
+    console.log(`Signature: ${transferResult.data.signature}`);
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+### 📱 Bill Payments
+
+<CardGroup cols={2}>
+  <Card title="📞 Airtime" icon="phone">
+    ```typescript
+    const result = await sdk.bills.buyAirtime({
+      phoneNumber: "08012345678",
+      biller: "MTN",
+      amount: 500
+    });
+    ```
+  </Card>
+  
+  <Card title="💡 Electricity" icon="bolt">
+    ```typescript
+    const result = await sdk.bills.buyElectricity({
+      meterNumber: "04123456789",
+      amount: 2000,
+      disco: "IKEJA DISCO ELECTRICITY"
+    });
+    ```
+  </Card>
+  
+  <Card title="📺 Cable TV" icon="tv">
+    ```typescript
+    const result = await sdk.bills.buyCableTV({
+      smartCardNumber: "1234567890",
+      package: "GOTV_MAX",
+      amount: 5000
+    });
+    ```
+  </Card>
+  
+  <Card title="🌐 Internet Data" icon="wifi">
+    ```typescript
+    const result = await sdk.bills.buyData({
+      phoneNumber: "08012345678",
+      dataPlan: "1GB",
+      network: "MTN"
+    });
+    ```
+  </Card>
+</CardGroup>
+
+---
+
+### 🧠 AI Agent Integration
+
+<Frame>
+  <div className="p-5 bg-gradient-to-br from-[#0A0F1E] to-[#0D1425] rounded-xl">
+    
+    The Mr. Monei AI Agent provides natural language interaction for financial operations:
+    
+    ```typescript
+    // Initialize conversation
+    await sdk.agent.initializeConversation({
+      id: "conv_123"
+    });
+    
+    // Chat with AI agent
+    const chatResponse = await sdk.agent.chat({
+      message: "What's my current account balance?",
+      conversationId: "conv_123"
+    });
+    
+    console.log(`Agent: ${chatResponse.response}`);
+    
+    // Get conversation history
+    const messages = await sdk.agent.getConversationMessages("conv_123", 20);
+    ```
+    
+    <Note>
+      The AI agent can perform transactions, check balances, pay bills, and answer questions about your financial history.
+    </Note>
+  
+  </div>
+</Frame>
+
+
     icon="map"
     href="/essentials/navigation"
   >
